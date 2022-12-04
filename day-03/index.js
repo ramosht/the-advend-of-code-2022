@@ -1,4 +1,5 @@
 const filename = "./input.txt";
+const { Console } = require("console");
 const { readFileSync } = require("fs");
 
 const alphabetLetters = [
@@ -83,6 +84,37 @@ function getSumOfRepeatedItems(rucksacks) {
   return sum;
 }
 
+function getCommonGroupBadge(rucksacks) {
+  let sumCommonBadges = 0;
+
+  for (let rucksack = 0; rucksack < rucksacks.length; rucksack++) {
+    let firstRucksack = rucksacks[rucksack];
+    let secondRucksack = rucksacks[++rucksack];
+    let thirdRucksack = rucksacks[++rucksack];
+
+    for (
+      let firstRucksackItem = 0;
+      firstRucksackItem < firstRucksack.length;
+      firstRucksackItem++
+    ) {
+      const currentItem = firstRucksack[firstRucksackItem];
+
+      const secondRucksackIncludesItem = secondRucksack.includes(currentItem);
+
+      const thirdRucksackIncludesItem = thirdRucksack.includes(currentItem);
+
+      if (secondRucksackIncludesItem && thirdRucksackIncludesItem) {
+        console.log(currentItem);
+        sumCommonBadges += alphabetLetters.indexOf(currentItem) + 1;
+        break;
+      }
+    }
+  }
+
+  return sumCommonBadges;
+}
+
 const rucksacksRaw = readFileSync(filename, "utf-8");
 const rucksacks = rucksacksRaw.split("\n");
-console.log(getSumOfRepeatedItems(rucksacks));
+
+console.log(getCommonGroupBadge(rucksacks));
